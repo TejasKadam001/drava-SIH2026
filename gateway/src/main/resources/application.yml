@@ -1,0 +1,54 @@
+# Drava API gateway configuration. Every value can be overridden by an environment variable.
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: drava-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  # In-memory H2 (PostgreSQL mode) by default; docker-compose injects the real Postgres URL.
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:drava;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.h2.Driver}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  jpa:
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.H2Dialect}
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+drava:
+  field-name: "Baghewala Field"
+  data-honesty-mode: "SIMULATION"
+  ml-service:
+    url: ${ML_SERVICE_URL:http://localhost:8000}

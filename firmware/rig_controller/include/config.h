@@ -2,7 +2,7 @@
 
 // Fill in for your network / MQTT broker before flashing.
 // The edge_gateway (see /edge_gateway) subscribes on RIG_TELEMETRY_TOPIC
-// and republishes into the ml_service ingestion endpoint.
+// and republishes into the twin_api ingestion endpoint.
 
 #define WIFI_SSID        "your_wifi_name"
 #define WIFI_PASSWORD    "your_wifi_password"

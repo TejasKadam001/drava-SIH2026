@@ -1,3 +1,1 @@
-"""
-Drava: Test Package
-"""
+"""Drava test suite."""

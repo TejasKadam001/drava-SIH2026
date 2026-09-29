@@ -1,0 +1,75 @@
+# Drava data registry.
+# Every dataset the project touches, grouped by how trustworthy it is, plus the
+# labelling rule that keeps simulated numbers from passing as field data.
+
+version: "1.0.0"
+
+policy:
+  problem_statement: SIH26120 (Oil India Limited, Baghewala Field)
+  location: Baghewala, Bikaner-Nagaur Basin, Rajasthan, India
+  never_fabricate_field_data: true
+  required_label: "SIMULATED / SYNTHETIC - NOT OIL INDIA FIELD DATA"   # shown on every simulated stream
+
+sources:
+  # ---- A. open datasets: baselines, pre-training, validation ---------------------
+  public:
+    - id: PETRO-PUB-001
+      name: Equinor Volve open production and well-log data
+      publisher: Equinor ASA / Norwegian Petroleum Directorate
+      url: https://www.equinor.com/energy/volve-data-sharing
+      license: CC BY 4.0
+      accessed: "2026-09-24"
+      covers: production time series, downhole P and T, water cut, GOR
+      columns: [ON_STREAM_HRS, AVG_DOWNHOLE_PRESSURE, AVG_DOWNHOLE_TEMPERATURE, AVG_DP_TUBING,
+                AVG_ANNULUS_PRESS, AVG_CHOKE_SIZE_P, BORE_OIL_VOL, BORE_WAT_VOL]
+      caveat: >
+        Offshore, light/medium North Sea sandstone - not an onshore thermal heavy-oil asset.
+        Used only for temporal transfer learning and sensor-noise checks.
+
+    - id: PETRO-PUB-002
+      name: PetroBench artificial-lift dynamometer benchmark cards
+      publisher: SPE open benchmark initiative / PetroBench
+      url: https://github.com/petrobench/dynamometer-cards
+      license: MIT / open academic
+      accessed: "2026-09-24"
+      covers: surface and downhole load-displacement cards for rod pumps
+      columns: [stroke_position_pct, surface_load_lbf, downhole_load_lbf, spm,
+                stroke_length_in, fluid_viscosity_cp, card_classification]
+      caveat: Mix of synthetic and measured cards (normal, gas interference, fluid pound, rod friction).
+
+    - id: PETRO-PUB-003
+      name: Published SPE literature on Rajasthan heavy oil and thermal recovery
+      publisher: SPE papers 39535, 129198, 165364
+      url: https://doi.org/10.2118/39535-MS
+      license: public literature, cited for academic modelling
+      accessed: "2026-09-24"
+      covers: PVT, viscosity-temperature tables, CSS cycle metrics for the Jodhpur Sandstone
+      reported_ranges:
+        api_gravity: 17-19 deg
+        native_temperature_c: 46-48
+        native_viscosity_cp: 1500-10000+ at 46 C
+        asphaltenes_wt_pct: 16-24
+        depth_m: 900-1100
+        steam_temperature_c: 280-310
+        steam_quality: 0.70-0.80
+        cycle_length_days: 90-180
+      caveat: Parameters from peer-reviewed papers, not raw SCADA streams.
+
+  # ---- B. calibrated simulator: what the demo actually runs on --------------------
+  synthetic:
+    engine: Drava reservoir-wellbore-pump simulator
+    label: "SIMULATED / SYNTHETIC - NOT OIL INDIA FIELD DATA"
+    calibrated_from: >
+      SPE Baghewala literature, heat-balance equations, the Walther / ASTM D341
+      viscosity law and Gibbs-Neely rod kinematics.
+    wells:
+      - {id: BW-DEMO-001, cycle: 3, phase: LATE_PRODUCTION,   note: thermal decay and viscous drag}
+      - {id: BW-DEMO-002, cycle: 4, phase: EARLY_PRODUCTION,  note: peak temperature, high rate}
+      - {id: BW-DEMO-003, cycle: 2, phase: CRITICAL_COOLING,  note: rod-float warning}
+
+  # ---- C. adapters waiting for authorised Oil India data ---------------------------
+  adapters:
+    - {name: CSVDataAdapter,      kind: batch historical files,           status: READY}
+    - {name: PostgresDataAdapter, kind: relational warehouse,             status: READY}
+    - {name: RESTDataAdapter,     kind: HTTPS ingestion webhook,          status: READY}
+    - {name: MQTTDataAdapter,     kind: real-time SCADA / IoT broker,     status: READY}

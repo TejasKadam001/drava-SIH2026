@@ -3,15 +3,15 @@ Drava Edge Gateway
 ======================
 The wire between the physical rig and the digital twin. The ESP32
 (firmware/rig_controller) publishes real sensor readings over MQTT; this
-process subscribes, and forwards each reading into ml_service's ingestion
-endpoints (/ingest/telemetry/{well_id}, /ingest/dynocard/{well_id}).
+process subscribes, and forwards each reading into twin_api's ingestion
+endpoints (/v1/rig/{well_id}/telemetry, /v1/rig/{well_id}/dynocard).
 
-Run this alongside ml_service during a demo:
+Run this alongside twin_api during a demo:
     python edge_gateway/mqtt_to_api_bridge.py
 
 Everything downstream (the dashboard, the failure detector, the decline
 curve forecast) then automatically prefers this live data over the
-simulator, see ml_service/live_data_manager.py for the freshness switch.
+simulator, see twin_api/rig_link.py for the freshness switch.
 """
 
 import json
@@ -41,27 +41,27 @@ TARGET_WELL_ID = "BW-DEMO-001"
 def forward_telemetry(payload: dict) -> None:
     try:
         resp = requests.post(
-            f"{ML_SERVICE_BASE_URL}/ingest/telemetry/{TARGET_WELL_ID}",
+            f"{ML_SERVICE_BASE_URL}/v1/rig/{TARGET_WELL_ID}/telemetry",
             json=payload,
             timeout=2.0,
         )
         if resp.status_code != 200:
-            log.warning("ml_service rejected telemetry: %s %s", resp.status_code, resp.text)
+            log.warning("twin_api rejected telemetry: %s %s", resp.status_code, resp.text)
     except requests.RequestException as e:
-        log.warning("could not reach ml_service (telemetry): %s", e)
+        log.warning("could not reach twin_api (telemetry): %s", e)
 
 
 def forward_dynocard(card_points: list) -> None:
     try:
         resp = requests.post(
-            f"{ML_SERVICE_BASE_URL}/ingest/dynocard/{TARGET_WELL_ID}",
+            f"{ML_SERVICE_BASE_URL}/v1/rig/{TARGET_WELL_ID}/dynocard",
             json={"rig_id": RIG_ID, "source": "LIVE_HARDWARE", "card_points": card_points},
             timeout=2.0,
         )
         if resp.status_code != 200:
-            log.warning("ml_service rejected dyno card: %s %s", resp.status_code, resp.text)
+            log.warning("twin_api rejected dyno card: %s %s", resp.status_code, resp.text)
     except requests.RequestException as e:
-        log.warning("could not reach ml_service (dynocard): %s", e)
+        log.warning("could not reach twin_api (dynocard): %s", e)
 
 
 def on_connect(client, userdata, flags, reason_code, properties=None):
@@ -96,7 +96,7 @@ def on_message(client, userdata, msg):
 def send_command(client: mqtt.Client, target_spm: float = None, target_temp_c: float = None,
                   cool_down_demo: bool = None) -> None:
     """
-    Sends a command down to the rig. This is the hook the ml_service
+    Sends a command down to the rig. This is the hook the twin_api
     optimizer (or a jury-demo "trigger fault" button) would call: 'reduce
     stroke speed', 'reinject steam', or the live-fault trigger used on stage.
     """

@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar';
-import { OverviewView } from './components/OverviewView';
-import { AutopilotView } from './components/AutopilotView';
-import { SubTabs } from './components/SubTabs';
-import { DigitalTwinView } from './components/DigitalTwinView';
-import { DynamometerCard } from './components/DynamometerCard';
-import { CSSOptimizerView } from './components/CSSOptimizerView';
-import { SRPOptimizerView } from './components/SRPOptimizerView';
-import { FailureIntelligenceView } from './components/FailureIntelligenceView';
-import { ScenarioLabView } from './components/ScenarioLabView';
-import { ParetoOptimizationView } from './components/ParetoOptimizationView';
-import { AICopilotDrawer } from './components/AICopilotDrawer';
-import { JuryDemoModal } from './components/JuryDemoModal';
+import { Navbar } from './views/Navbar';
+import { OverviewView } from './views/OverviewView';
+import { AutopilotView } from './views/AutopilotView';
+import { SubTabs } from './views/SubTabs';
+import { DigitalTwinView } from './views/DigitalTwinView';
+import { DynamometerCard } from './views/DynamometerCard';
+import { CSSOptimizerView } from './views/CSSOptimizerView';
+import { SRPOptimizerView } from './views/SRPOptimizerView';
+import { FailureIntelligenceView } from './views/FailureIntelligenceView';
+import { ScenarioLabView } from './views/ScenarioLabView';
+import { ParetoOptimizationView } from './views/ParetoOptimizationView';
+import { AICopilotDrawer } from './views/AICopilotDrawer';
+import { JuryDemoModal } from './views/JuryDemoModal';
 
-import { api } from './services/api';
+import { api } from './lib/api';
 import {
   WellId,
   TelemetryFrame,
   DynoCardData,
   FailureIntelligence,
   OptimizationResult
-} from './types/petro';
+} from './contracts/domain';
 
 export function App() {
   const [selectedWell, setSelectedWell] = useState<WellId>('BW-DEMO-001');

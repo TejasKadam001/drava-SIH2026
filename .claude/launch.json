@@ -4,7 +4,7 @@
     {
       "name": "drava-ml-service",
       "runtimeExecutable": "/Users/tanmaykadam/Desktop/mach2/.venv/bin/uvicorn",
-      "runtimeArgs": ["ml_service.main:app", "--host", "127.0.0.1", "--port", "8000"],
+      "runtimeArgs": ["twin_api.main:app", "--host", "127.0.0.1", "--port", "8000"],
       "port": 8000
     },
     {

@@ -16,11 +16,11 @@ If you don't have the physical rig connected, the software stack will automatica
    ```
 3. Install the required Python dependencies:
    ```bash
-   pip install -r ml_service/requirements.txt
+   pip install -r twin_api/requirements.txt
    ```
 4. Start the FastAPI server:
    ```bash
-   uvicorn ml_service.main:app --host 127.0.0.1 --port 8000 --reload
+   uvicorn twin_api.main:app --host 127.0.0.1 --port 8000 --reload
    ```
 
 ### Frontend (React Dashboard)
@@ -42,7 +42,7 @@ If you don't have the physical rig connected, the software stack will automatica
 *(Optional) Running tests:*
 ```bash
 # From the root directory with the virtual environment activated
-python scripts/test_all.py
+python scripts/check_all.py
 ```
 
 ## 2. Running with the Physical Rig (Live Hardware Mode)
@@ -79,6 +79,6 @@ To use live hardware data, you need to flash the ESP32 and run the MQTT bridge.
 
 Once the bridge is running, you can confirm the rig is live by pinging the backend API:
 ```bash
-curl http://127.0.0.1:8000/api/wells/BW-DEMO-001/data-mode
+curl http://127.0.0.1:8000/v1/wells/BW-DEMO-001/data-mode
 ```
 You should receive a response indicating `"mode": "LIVE_HARDWARE"`. The frontend dashboard will also automatically switch to live rig points.

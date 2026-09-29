@@ -1,3 +1,0 @@
-"""
-Drava: ML Service Package
-"""

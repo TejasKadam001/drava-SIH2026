@@ -11,7 +11,7 @@
  *                              the dynamometer card: load vs. position)
  *   DS18B20 + heater SSR    -> the CSS stand-in: heat the fluid to thin it,
  *                              let it cool to thicken it again
- *   DC motor + H-bridge PWM -> stands in for the real VFD; the ml_service's
+ *   DC motor + H-bridge PWM -> stands in for the real VFD; the twin_api's
  *                              optimizer can actually command this, not just
  *                              display a number
  *
@@ -21,7 +21,7 @@
  *   2) Motor PID   -> holds stroke speed (SPM) at a commanded target
  * The *decision* of what those targets should be (is the card showing rod
  * floating? should SPM drop? should we "reinject steam"?) is made upstream,
- * in ml_service, off the live telemetry this firmware publishes. That split
+ * in twin_api, off the live telemetry this firmware publishes. That split
  * is deliberate: PID governs the actuators, the AI/rule layer governs the
  * decisions.
  */
@@ -147,7 +147,7 @@ void setup() {
 // When the rod is floating, the downstroke load flattens out near the
 // minimum for an extended stretch instead of tracking the crank smoothly.
 // This is intentionally a simple engineering heuristic, not a trained model,
-// it runs locally with zero latency; the ml_service layer applies the
+// it runs locally with zero latency; the twin_api layer applies the
 // heavier pattern classifier on the card shape this streams up.
 bool detectRodFloatingHeuristic(float minN, float maxN, float periodMs) {
     float swing = maxN - minN;

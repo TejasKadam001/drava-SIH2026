@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+# Drava API gateway (Spring Boot 3 / Java 21) - two-stage build.
+
+ARG MAVEN_IMAGE=maven:3.9-eclipse-temurin-21-alpine
+ARG JRE_IMAGE=eclipse-temurin:21-jre-alpine
+
+# ---- stage 1: compile ----
+FROM ${MAVEN_IMAGE} AS compile
+WORKDIR /workspace
+# Copy the descriptor first so dependency layers are cached between source edits.
+COPY gateway/pom.xml .
+RUN mvn -B dependency:go-offline
+COPY gateway/src src
+RUN mvn -B -DskipTests clean package
+
+# ---- stage 2: runtime ----
+FROM ${JRE_IMAGE}
+WORKDIR /opt/drava
+ENV SPRING_PROFILES_ACTIVE=prod
+COPY --from=compile /workspace/target/*.jar drava-api.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "drava-api.jar"]

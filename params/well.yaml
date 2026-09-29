@@ -1,0 +1,79 @@
+# Drava physics parameters: Baghewala heavy-oil CSS + rod-pump system.
+# Reference values for the models in wellphysics/ (the code ships its own defaults;
+# this file documents them and is the place to change them for another field).
+
+asset:
+  field: Baghewala Field
+  basin: Bikaner-Nagaur Basin, Rajasthan, India
+  operator: Oil India Limited (OIL)
+  formation: Jodhpur Sandstone            # fine to medium grained, porous
+
+reservoir:
+  depth_m: 950.0                          # true vertical depth
+  net_pay_m: 18.0
+  native_temperature_c: 47.0
+  native_pressure_bar: 55.0
+  porosity: 0.26
+  permeability_md: 850.0
+  drainage_radius_m: 120.0
+  wellbore_radius_m: 0.108                # 8.5 in hole, 7 in casing
+  rock:
+    density_kg_m3: 2450.0
+    heat_capacity_kj_kg_k: 0.92
+
+crude:
+  api_gravity: 18.2
+  surface_density_kg_m3: 945.0
+  specific_heat_kj_kg_k: 2.10
+  asphaltene_wt_pct: 18.5
+  viscosity_cp:                           # calibration points for the Walther fit
+    at_47c: 4200.0
+    at_100c: 145.0
+    at_200c: 14.5
+  walther:
+    a: 8.924
+    b: 3.315
+
+steam:
+  temperature_c: 295.0
+  wellhead_pressure_bar: 80.0
+  quality: 0.78                           # dryness fraction
+  latent_heat_kj_kg: 1420.0
+  water_cp_kj_kg_k: 4.184
+  typical_job:
+    mass_tons_cwe: 2500.0
+    soak_days: 6.0
+  losses:
+    conduction_per_day: 0.0145            # to cap and base rock
+    fluid_withdrawal_factor: 0.0032       # heat removed per barrel produced
+
+pump:
+  setting_depth_m: 900.0
+  plunger:
+    diameter_mm: 57.15                    # 2.25 in
+    area_m2: 0.002565
+  rods:
+    top_mm: 25.4                          # 1 in, grade D
+    middle_mm: 22.22                      # 7/8 in
+    bottom_mm: 19.05                      # 3/4 in sinker section
+    density_kg_m3: 7850.0
+    youngs_modulus_gpa: 200.0
+    weight_in_air_n: 31200.0
+  tubing_id_mm: 62.0                      # 2-7/8 in
+  defaults:
+    stroke_m: 2.40
+    spm: 6.5
+    vfd_hz: 42.0
+  ratings:
+    gearbox_torque_in_lbs: 320000.0
+    beam_structure_lbs: 25000.0
+    rod_allowable_stress_psi: 32000.0     # modified Goodman
+
+limits:
+  injection_pressure_bar_max: 110.0       # formation parting pressure
+  soak_days: {min: 2.0, max: 15.0}
+  spm: {min: 2.0, max: 10.5}
+  polished_rod_load_lbs:
+    peak_max: 22000.0
+    trough_min: 1200.0                    # below this the bridle goes slack
+  float_viscosity_cp: 2200.0              # beyond this, SPM above ~5.5 floats the rods

@@ -1,1 +1,1 @@
--r ml_service/requirements.txt
+-r twin_api/requirements.txt
