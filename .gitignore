@@ -3,6 +3,8 @@
 Thumbs.db
 .idea/
 .vscode/
+.claude/
+.gitignore
 *.swp
 *.swo
 *.bak

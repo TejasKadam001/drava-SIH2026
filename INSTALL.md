@@ -1,4 +1,4 @@
-# 🛠️ DRAVA — Installation & Run Guide
+# DRAVA — Installation & Run Guide
 
 How to get every part of DRAVA running: the inference service, the operator console, the Spring Boot gateway, Docker, and the physical rig.
 

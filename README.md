@@ -43,7 +43,7 @@ Operators inject high-pressure steam (**Cyclic Steam Stimulation**, CSS) to thin
 5. **A physical benchtop rig (the differentiator)**: an ESP32 with a load cell, crank encoder, DS18B20 fluid sensor, heater and DC motor. Real rod load and speed flow into the same pipeline, and commands flow back to the motor.
 6. **Live-versus-simulated switch**: every response says whether it came from `LIVE_HARDWARE` or `SIMULATION`, and simulated frames carry a watermark.
 
-> ⚠️ **Scientific classification**: DRAVA is a **decision-support system**. Plans are recommendations for a production engineer to approve; nothing is sent to a real VFD automatically. Metrics are measured on **synthetic** data (see [docs/evaluation.md](docs/evaluation.md)).
+> **Scientific classification**: DRAVA is a **decision-support system**. Plans are recommendations for a production engineer to approve; nothing is sent to a real VFD automatically. Metrics are measured on **synthetic** data (see [docs/evaluation.md](docs/evaluation.md)).
 
 ---
 
@@ -268,7 +268,7 @@ Field and Agents panels add a 12-well ranking with mini dyno-card shapes and a f
 
 | Document | Contents |
 |---|---|
-| 📄 [SIH26120_PROJECT_REPORT.md](./SIH26120_PROJECT_REPORT.md) | Full technical submission report |
+| [SIH26120_PROJECT_REPORT.md](./SIH26120_PROJECT_REPORT.md) | Full technical submission report |
 | [INSTALL.md](./INSTALL.md) | Setup on macOS / Linux / Windows, Docker, rig |
 | [CHANGELOG.md](./CHANGELOG.md) | Versioned release notes |
 | [PUSH_LOG.md](./PUSH_LOG.md) | What each push to the repository did |

@@ -10,15 +10,18 @@ If you don't have the physical rig connected, the software stack will automatica
 
 1. Open a terminal and navigate to the root directory of the project.
 2. Create and activate a virtual environment:
+
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 3. Install the required Python dependencies:
+
    ```bash
    pip install -r twin_api/requirements.txt
    ```
 4. Start the FastAPI server:
+
    ```bash
    uvicorn twin_api.main:app --host 127.0.0.1 --port 8000 --reload
    ```
@@ -26,20 +29,24 @@ If you don't have the physical rig connected, the software stack will automatica
 ### Frontend (React Dashboard)
 
 1. Open a second terminal and navigate to the `frontend` directory:
+
    ```bash
    cd frontend
    ```
 2. Install the Node.js dependencies:
+
    ```bash
    npm install
    ```
 3. Start the Vite development server:
+
    ```bash
    npm run dev
    ```
 4. Open your browser and navigate to the URL provided (usually `http://localhost:5173`).
 
 *(Optional) Running tests:*
+
 ```bash
 # From the root directory with the virtual environment activated
 python scripts/check_all.py
@@ -52,10 +59,12 @@ To use live hardware data, you need to flash the ESP32 and run the MQTT bridge.
 ### Flash the ESP32
 
 1. Navigate to the firmware directory:
+
    ```bash
    cd firmware/rig_controller
    ```
 2. Flash the microcontroller using PlatformIO:
+
    ```bash
    pio run -t upload
    ```
@@ -63,14 +72,17 @@ To use live hardware data, you need to flash the ESP32 and run the MQTT bridge.
 ### Start the Edge Gateway
 
 1. Open a new terminal and navigate to the `edge_gateway` directory:
+
    ```bash
    cd edge_gateway
    ```
 2. Make sure your Python virtual environment is activated, then install requirements:
+
    ```bash
    pip install -r requirements.txt
    ```
 3. Run the MQTT to API bridge:
+
    ```bash
    python mqtt_to_api_bridge.py
    ```
@@ -78,7 +90,9 @@ To use live hardware data, you need to flash the ESP32 and run the MQTT bridge.
 ### Verify Connection
 
 Once the bridge is running, you can confirm the rig is live by pinging the backend API:
+
 ```bash
 curl http://127.0.0.1:8000/v1/wells/BW-DEMO-001/data-mode
 ```
+
 You should receive a response indicating `"mode": "LIVE_HARDWARE"`. The frontend dashboard will also automatically switch to live rig points.
