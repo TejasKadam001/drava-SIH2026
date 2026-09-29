@@ -1,4 +1,4 @@
-# 🛢️ DRAVA — Well-to-Surface Digital Twin with a Physical Rig (SIH26120)
+# DRAVA — Well-to-Surface Digital Twin with a Physical Rig (SIH26120)
 
 **SIH26120 — AI-Enabled Well-to-Surface Digital Twin for Joint Optimization of Cyclic Steam Stimulation (CSS) and Sucker Rod Pump (SRP) Operations, Baghewala Heavy-Oil Field**  
 *Oil India Limited (OIL) • Smart India Hackathon 2026*  
